@@ -39,6 +39,8 @@ void setup() {
   dac.begin(0x60);
   dac.setVoltage(control_voltage, true);
 
+  instrument.RegisterCommand(F("*IDN?"), &IDN);
+
   instrument.SetCommandTreeBase(F("FLOw"));
   instrument.RegisterCommand(F(":CURrent?"), &GetCurrentFlow);
   instrument.RegisterCommand(F(":SET"), &SetSetFlow);
@@ -98,6 +100,9 @@ float readFlow() {
   return 0.;
 }
 
+void IDN(SCPI_C commands, SCPI_P parameters, Stream& interface) {
+  interface.println("Jan Kuhfeld,HoribaSTECController, None,0.1/0.1");
+}
 
 void GetCurrentFlow(SCPI_C commands, SCPI_P parameters, Stream& interface) {
   interface.println(readFlow());
